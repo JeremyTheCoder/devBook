@@ -2,6 +2,7 @@ const express = require('express');
 const router = express();
 const { check, validationResult } = require('express-validator');
 
+//import user model
 const User = require('../../models/User');
 
 //@route   POST api/users
