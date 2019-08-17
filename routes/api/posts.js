@@ -213,25 +213,25 @@ router.post(
 router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
+
+    // Pull out comment
     const comment = post.comments.find(
       comment => comment.id === req.params.comment_id
     );
 
-    if (!post) {
-      return res.status(404).json({ msg: 'Post not found' });
-    }
-
+    // Make sure comment exists
     if (!comment) {
-      return res.status(404).json({ msg: 'Comment not found' });
+      return res.status(404).json({ msg: 'Comment does not exist' });
     }
 
-    //check post belongs to user
+    // Check user
     if (comment.user.toString() !== req.user.id) {
       return res.status(401).json({ msg: 'User not authorized' });
     }
 
+    // Get remove index
     const removeIndex = post.comments
-      .map(comment => comment.id.toString())
+      .map(comment => comment.id)
       .indexOf(req.params.comment_id);
 
     post.comments.splice(removeIndex, 1);
@@ -241,9 +241,6 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
     res.json(post.comments);
   } catch (err) {
     console.error(err.message);
-    if (err.kind === 'ObjectId') {
-      return res.status(404).json({ msg: 'Post not found' });
-    }
     res.status(500).send('Server Error');
   }
 });
