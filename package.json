@@ -1,7 +1,7 @@
 {
-  "name": "devconnecter",
+  "name": "devconnector",
   "version": "1.0.0",
-  "description": "social network",
+  "description": "facebook for developers",
   "main": "server.js",
   "scripts": {
     "start": "node server",
